@@ -4,11 +4,18 @@ const mongoose = require("mongoose");
 
 const dotenv = require("dotenv");
 const app = express();
+const cors = require("cors"); //çağurduk sonrasında bunu middleware olarak çağırmamız lazım
 const port = 5000;
 
-
 //routes
-const categoryRoute = require("./routes/categories.js")
+const categoryRoute = require("./routes/categories.js");
+const productRoute = require("./routes/products.js");
+const billRoute = require("./routes/bills.js");
+const authRoute = require("./routes/auth.js");
+const userRoute = require("./routes/users.js");
+
+
+
 
 
 dotenv.config();
@@ -23,9 +30,19 @@ const connect = async () => {
   }
 };
 
-//bağlantı olduktan sonra kullanmak lazım
+//bağlantı olduktan sonra kullanmak lazımapp.use("/api", categoryRoute);
 
-app.use("/api",categoryRoute)
+//middlewares
+app.use(express.json());//önce jsona çevirlsin sonrasında cors kullanılsın hiyareiş,
+app.use(cors());
+app.use("/api/categories", categoryRoute);
+app.use("/api/products", productRoute);
+app.use("/api/bills", billRoute);
+app.use("/api/auth", authRoute);
+app.use("/api/users", userRoute);
+
+
+
 
 app.get("/", (req, res) => res.send("sselamlarrr"));
 
